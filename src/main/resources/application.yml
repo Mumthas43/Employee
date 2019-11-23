@@ -1,0 +1,11 @@
+spring:
+  application:
+    name: employeeservice
+
+server:
+  port: 8070
+  servlet:
+    path: /
+
+logging:
+  path: ${BUILD_FOLDER:build}/employee
