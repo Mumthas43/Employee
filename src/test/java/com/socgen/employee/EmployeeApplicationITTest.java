@@ -23,6 +23,7 @@ import java.util.*;
 
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(
@@ -48,28 +49,20 @@ public class EmployeeApplicationITTest {
 
         System.out.println("Integration Test"+mvcResult.getResponse());
 
-        MvcResult mvcResult11 = mockMvc.perform(
+        String json = "{\n" +
+                " \"firstName\" : \"Suresh\",\n" +
+                " \"lastName\" : \"Sharma\",\n" +
+                " \"gender\" : \"Male\",\n" +
+                " \"dob\" : \"1996-01-14\",\n" +
+                " \"department\" : \"DevOps\"\n" +
+                "}";
+        mockMvc.perform(
                 MockMvcRequestBuilders.post("/employees")
-                .accept(MediaType.APPLICATION_JSON)
-        ).andReturn();
-        System.out.println("Integration Test save: "+mvcResult11.getResponse());
+                        .contentType(MediaType.APPLICATION_JSON).content(json)
+                        .characterEncoding("utf-8"))
+                .andExpect(status().isCreated())
+                .andReturn();
+
     }
-
-
-
-	/*@Autowired
-	MockMvc mockMvc;
-
-	@Autowired
-	private EmployeeService employeeService;
-
-	@Test
-	void getAllEmployees() throws Exception{
-		Map<Long,Employee> employeeList = new HashMap<>();
-		employeeList.put(Long.valueOf(101),new Employee(Long.valueOf(101),"Ramesh","Patil","Male",new Date(03-01-1992),"Support"));
-		when(employeeService.getListOfEmployees()).thenReturn(employeeList);
-
-		mockMvc.perform(MockMvcRequestBuilders.get("/employees").contentType(MediaType.APPLICATION_JSON));
-	}*/
 
 }
